@@ -1,4 +1,4 @@
 @NullMarked
-package com.example.nullaway_config;
+package com.example.jspecify.nullaway;
 
 import org.jspecify.annotations.NullMarked;
