@@ -1,0 +1,61 @@
+= JSpecify + NullAway Example with Spring Boot
+
+A demonstration project showing how https://jspecify.dev/[JSpecify] annotations work with https://github.com/uber/nullaway[NullAway] for compile-time null safety in a Spring Boot application.
+
+== What This Demonstrates
+
+* *JSpecify annotations* - Type-use annotations for null safety (`@Nullable`, `@NullMarked`)
+* *NullAway static analysis* - Compile-time null pointer exception prevention
+* *Spring Boot integration* - How null safety works with Spring Framework
+
+== Testing Null Safety
+
+=== See NullAway in Action
+
+The `UserController` has an intentional bug (commented out) at line 34-36. To see NullAway catch it:
+
+1. Uncomment the null check in `UserController.java`:
++
+[source,java]
+----
+@GetMapping("/{id}")
+public ResponseEntity<Map<String, String>> getUser(@PathVariable long id) {
+    String userName = userService.findUserById(id);
+
+    // Comment out this null check to trigger NullAway error:
+    /*
+    if (userName == null) {
+        return ResponseEntity.notFound().build();
+    }
+    */
+
+    return ResponseEntity.ok(Map.of("id", String.valueOf(id), "name", userName.toUpperCase()));
+}
+----
+
+2. Run `mvn compile` and NullAway will report an error:
++
+----
+[ERROR] dereferenced expression userName is @Nullable
+----
+
+== Key Concepts
+
+=== @NullMarked Package
+All packages are marked with `@NullMarked` (see `package-info.java` files), making all types non-null by default.
+
+=== @Nullable Annotation
+Explicitly marks types that can be null:
+
+[source,java]
+----
+public @Nullable String findUserById(long userId) {
+    return userDatabase.get(userId);  // May return null
+}
+----
+
+== Learn More
+
+* https://jspecify.dev/[JSpecify Documentation]
+* https://github.com/uber/nullaway[NullAway on GitHub]
+* https://github.com/uber/nullaway/wiki[NullAway Wiki]
