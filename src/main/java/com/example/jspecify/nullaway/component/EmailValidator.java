@@ -3,7 +3,7 @@ package com.example.jspecify.nullaway.component;
 import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
-// Uncomment to see behaviro
+// Uncomment to see behavior
 // @NullMarked
 @Component
 public class EmailValidator {
